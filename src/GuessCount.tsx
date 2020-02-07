@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import './GuessCount.css'
 
-interface GuessCountProps {
+interface IGuessCountProps {
   guesses: number
 }
 
-const GuessCount: FC<GuessCountProps> = ({ guesses }) => (
+const GuessCount: FC<IGuessCountProps> = ({ guesses }) => (
   <div className="guesses">{guesses}</div>
 )
 
