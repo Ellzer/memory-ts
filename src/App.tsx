@@ -8,6 +8,8 @@ import './App.css'
 const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
 
 class App extends React.Component {
+  cards = this.generateCards()
+
   generateCards() {
     const result = []
     const candidates = shuffle(SYMBOLS)
@@ -17,18 +19,17 @@ class App extends React.Component {
     return shuffle(result)
   }
 
-  handleCardClick(card: string) {
-    console.log(card, 'clicked')
+  // Arrow fx for binding
+  handleCardClick = (card: string) => {
+    console.log(card, 'clicked', this)
   }
 
   render() {
     const won = new Date().getSeconds() % 2 === 0
-    const cards = this.generateCards()
     return (
       <div className="memory">
         <GuessCount guesses={0} />
-        {/* Please verify line below with Charly */}
-        {cards.map((card, index) => (
+        {this.cards.map((card, index) => (
           <Card
             card={card}
             feedback="visible"
@@ -41,4 +42,5 @@ class App extends React.Component {
     )
   }
 }
+
 export default App

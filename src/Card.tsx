@@ -5,7 +5,7 @@ const HIDDEN_SYMBOL = '❓'
 
 interface ICardProps {
   card: string
-  feedback: string
+  feedback: 'hidden' | 'justMatched' | 'justMismatched' | 'visible'
   onClick: (card: string) => void
 }
 
