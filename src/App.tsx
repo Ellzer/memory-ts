@@ -6,12 +6,13 @@ import HallOfFame, { FAKE_HOF } from './HallOfFame'
 import './App.css'
 
 const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
+const VISUAL_PAUSE_MSECS = 750
 
 interface IAppState {
   cards: string[]
-  currentPair: string[]
+  currentPair: number[]
   guesses: number
-  matchedCardIndices: string[]
+  matchedCardIndices: number[]
 }
 
 class App extends Component<{}, IAppState> {
@@ -22,7 +23,6 @@ class App extends Component<{}, IAppState> {
     matchedCardIndices: []
   }
 
-  // …
   generateCards() {
     const result = []
     const candidates = shuffle(SYMBOLS)
@@ -32,12 +32,7 @@ class App extends Component<{}, IAppState> {
     return shuffle(result)
   }
 
-  // Arrow fx for binding
-  handleCardClick = (card: string) => {
-    console.log(card, 'clicked', this)
-  }
-
-  getFeedbackForCard(index: string) {
+  getFeedbackForCard(index: number) {
     const { currentPair, matchedCardIndices } = this.state
     const indexMatched = matchedCardIndices.includes(index)
 
@@ -52,6 +47,35 @@ class App extends Component<{}, IAppState> {
     return indexMatched ? 'visible' : 'hidden'
   }
 
+  // Arrow fx for binding
+  handleCardClick = (index: number) => {
+    const { currentPair } = this.state
+
+    if (currentPair.length === 2) {
+      return
+    }
+
+    if (currentPair.length === 0) {
+      this.setState({ currentPair: [index] })
+      return
+    }
+
+    this.handleNewPairClosedBy(index)
+  }
+
+  handleNewPairClosedBy(index: number) {
+    const { cards, currentPair, guesses, matchedCardIndices } = this.state
+
+    const newPair = [currentPair[0], index]
+    const newGuesses = guesses + 1
+    const matched = cards[newPair[0]] === cards[newPair[1]]
+    this.setState({ currentPair: newPair, guesses: newGuesses })
+    if (matched) {
+      this.setState({ matchedCardIndices: [...matchedCardIndices, ...newPair] })
+    }
+    setTimeout(() => this.setState({ currentPair: [] }), VISUAL_PAUSE_MSECS)
+  }
+
   render() {
     const { cards, guesses, matchedCardIndices } = this.state
     const won = matchedCardIndices.length === cards.length
@@ -61,9 +85,10 @@ class App extends Component<{}, IAppState> {
         {cards.map((card, index) => (
           <Card
             card={card}
-            feedback="visible"
-            onClick={this.handleCardClick}
+            feedback={this.getFeedbackForCard(index)}
+            index={index}
             key={index}
+            onClick={this.handleCardClick}
           />
         ))}
         {won && <HallOfFame entries={FAKE_HOF} />}
