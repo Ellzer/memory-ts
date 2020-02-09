@@ -9,7 +9,7 @@ interface IEntry {
 }
 
 interface IHallOfFameProps {
-  entries: Array<IEntry>
+  entries: IEntry[]
 }
 
 const HallOfFame: FC<IHallOfFameProps> = ({ entries }) => (
