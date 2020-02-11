@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import shuffle from 'lodash.shuffle'
-import Card from './Card'
-import GuessCount from './GuessCount'
-import HallOfFame, { FAKE_HOF } from './HallOfFame'
+import Card from './Components/Card/Card'
+import GuessCount from './Components/GuessCount/GuessCount'
+import HallOfFame, { FAKE_HOF } from './Components/HallOfFame/HallOfFame'
+import HighScoreInput from './Components/HighScoreInput/HighScoreInput'
 import './App.css'
 
 const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
@@ -91,6 +92,7 @@ class App extends Component<{}, IAppState> {
             onClick={this.handleCardClick}
           />
         ))}
+        <HighScoreInput guesses={guesses} />
         {won && <HallOfFame entries={FAKE_HOF} />}
       </div>
     )
