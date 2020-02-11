@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import './HallOfFame.css'
 
-interface IEntry {
+export interface IHOFEntry {
   id: number
   guesses: number
   date: string
@@ -9,22 +9,24 @@ interface IEntry {
 }
 
 interface IHallOfFameProps {
-  entries: IEntry[]
+  entries: IHOFEntry[]
 }
 
-const HallOfFame: FC<IHallOfFameProps> = ({ entries }) => (
-  <table className="hallOfFame">
-    <tbody>
-      {entries.map(({ date, guesses, id, player }) => (
-        <tr key={id}>
-          <td className="date">{date}</td>
-          <td className="guesses">{guesses}</td>
-          <td className="player">{player}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-)
+const HallOfFame: FC<IHallOfFameProps> = ({ entries }) => {
+  return (
+    <table className="hallOfFame">
+      <tbody>
+        {entries.map(({ date, guesses, id, player }) => (
+          <tr key={id}>
+            <td className="date">{date}</td>
+            <td className="guesses">{guesses}</td>
+            <td className="player">{player}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
 
 export default HallOfFame
 

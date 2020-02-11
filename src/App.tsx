@@ -2,17 +2,18 @@ import React, { Component } from 'react'
 import shuffle from 'lodash.shuffle'
 import Card from './Components/Card/Card'
 import GuessCount from './Components/GuessCount/GuessCount'
-import HallOfFame, { FAKE_HOF } from './Components/HallOfFame/HallOfFame'
+import HallOfFame, { IHOFEntry } from './Components/HallOfFame/HallOfFame'
 import HighScoreInput from './Components/HighScoreInput/HighScoreInput'
 import './App.css'
 
 const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
-const VISUAL_PAUSE_MSECS = 750
+const VISUAL_PAUSE_MSECS = 500
 
 interface IAppState {
   cards: string[]
   currentPair: number[]
   guesses: number
+  hallOfFame: IHOFEntry[] | null
   matchedCardIndices: number[]
 }
 
@@ -21,6 +22,7 @@ class App extends Component<{}, IAppState> {
     cards: this.generateCards(),
     currentPair: [],
     guesses: 0,
+    hallOfFame: null,
     matchedCardIndices: []
   }
 
@@ -77,8 +79,13 @@ class App extends Component<{}, IAppState> {
     setTimeout(() => this.setState({ currentPair: [] }), VISUAL_PAUSE_MSECS)
   }
 
+  // Arrow fx for binding
+  displayHallOfFame = (hallOfFame: IHOFEntry[]) => {
+    this.setState({ hallOfFame })
+  }
+
   render() {
-    const { cards, guesses, matchedCardIndices } = this.state
+    const { cards, guesses, hallOfFame, matchedCardIndices } = this.state
     const won = matchedCardIndices.length === cards.length
     return (
       <div className="memory">
@@ -92,8 +99,15 @@ class App extends Component<{}, IAppState> {
             onClick={this.handleCardClick}
           />
         ))}
-        <HighScoreInput guesses={guesses} />
-        {won && <HallOfFame entries={FAKE_HOF} />}
+        {won &&
+          (hallOfFame ? (
+            <HallOfFame entries={hallOfFame} />
+          ) : (
+            <HighScoreInput
+              guesses={guesses}
+              onStored={this.displayHallOfFame}
+            />
+          ))}
       </div>
     )
   }
