@@ -6,7 +6,7 @@ import HallOfFame, { IHOFEntry } from './Components/HallOfFame/HallOfFame'
 import HighScoreInput from './Components/HighScoreInput/HighScoreInput'
 import './App.css'
 
-const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
+export const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
 const VISUAL_PAUSE_MSECS = 500
 
 interface IAppState {
